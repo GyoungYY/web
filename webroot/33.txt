@@ -1,0 +1,115 @@
+try {
+			byte[] bytes = readBytes(is);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes), "UTF-8"));
+			try{
+				String line = null;
+				while((line = reader.readLine())!=null){
+					
+				}
+			}finally{
+				reader.close();
+			}
+			for(int i = 0;i < bytes.length;i++){
+				
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private byte[] readBytes(InputStream is) {
+		int i = 0, c = 0, offset = 0;
+		int len = is.available();
+		byte b[] = new byte[len];
+		while (offset < len) {
+			offset += is.read(b, offset, len - offset);
+		}		return null;
+	}
+
+
+*************************************************************************************
+/*	public RequestImp(InputStream is) {
+		try {
+			int i = 0, c = 0, offset = 0;
+			int len = is.available();
+			byte b[] = new byte[len];
+			while (offset < len) {
+				offset += is.read(b, offset, len - offset);
+			}
+			while (i < len) {
+				StringBuffer sb = new StringBuffer();
+				String str = null;
+				while (true) {
+					c = b[i];
+					i++;
+					sb.append((char) c);
+					if (c == '\n' || i == len)
+						break;
+				}
+				str = sb.toString();
+				System.out.print(str);
+				if (str.startsWith("GET") || str.startsWith("POST")) {
+					line = str;
+				}
+				else if (str.contains(":")) {
+					String[] st = str.split(" ", 2);
+					if (st[0].contains(":")){
+						st[0].replace(":", "");
+						map.put(st[0], st[1]);
+					}
+				}
+				else if(str.contains("username")) {
+					String st[] = str.split("&");
+					username= st[0].substring(st[0].indexOf("=")+1,st[0].length());
+					password = st[1].substring(st[1].indexOf("=")+1,st[1].length());
+				}
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+*/
+****************************************************************************************
+	public RequestImp(InputStream is) {
+		try {
+			byte[] bytes = readBytes(is);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes),"UTF-8"));
+			try{
+				String str = null;
+				while((str = reader.readLine())!=null){
+					if (str.startsWith("GET") || str.startsWith("POST")) {
+						line = str;
+					}
+					else if (str.contains(":")) {
+						String[] st = str.split(" ", 2);
+						if (st[0].contains(":")){
+							st[0].replace(":", "");
+							map.put(st[0], st[1]);
+						}
+					}
+					else if(str.contains("username")) {
+						String st[] = str.split("&");
+						username= st[0].substring(st[0].indexOf("=")+1,st[0].length());
+						password = st[1].substring(st[1].indexOf("=")+1,st[1].length());
+					}
+				}
+			}finally{
+				reader.close();
+			}
+			
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	private byte[] readBytes(InputStream is) throws IOException {
+		int offset = 0;
+		int len = is.available();
+		byte b[] = new byte[len];
+		while (offset < len) {
+			offset += is.read(b, offset, len - offset);
+		}		
+		return b;		
+	}
